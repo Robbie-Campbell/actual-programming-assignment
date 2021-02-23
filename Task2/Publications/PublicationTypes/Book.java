@@ -33,6 +33,14 @@ public class Book extends Publication{
             return this.rating;
     }
 
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
     @Override
     public String getAllInfo() 
     {
