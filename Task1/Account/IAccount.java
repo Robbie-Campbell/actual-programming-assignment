@@ -1,4 +1,4 @@
-package Account;
+package Task1.Account;
 
 // Interface for the Account class
 public interface IAccount {

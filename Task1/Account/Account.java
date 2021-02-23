@@ -2,7 +2,7 @@
 @author Robbie Campbell
 */
 
-package Account;
+package Task1.Account;
 
 // The super class account
 public abstract class Account implements IAccount{

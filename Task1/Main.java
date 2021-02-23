@@ -1,4 +1,6 @@
-import Account.*;
+package Task1;
+
+import Task1.Account.*;
 
 // Run the main method
 public class Main
