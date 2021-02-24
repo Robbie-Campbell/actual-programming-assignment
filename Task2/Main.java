@@ -6,11 +6,15 @@ import java.util.ArrayList;
 
 import Task2.Publications.Availability;
 
+// The main class
 public class Main 
 {
-    
+
+    // Run the main method
     public static void main(String[] args)
     {
+
+        // Test the magazine class
         Magazine magazine = new Magazine(1, "Woman Speak", 30, "Womyn", false, 10);
         magazine.setEdition("1st");
         magazine.setDescription("This is a cool magazine");
@@ -23,6 +27,7 @@ public class Main
 
         System.out.println("\n------------------------------------------\n");
 
+        // Test the newspaper class
         Newspaper newspaper = new Newspaper(1, "The Moon", 30, "British Publish House", false, 3, "Tabloid");
         newspaper.setEdition("1st");
         newspaper.setDescription("This is a cool newspaper");
@@ -39,6 +44,7 @@ public class Main
 
         System.out.println("\n------------------------------------------\n");
 
+        // Test the map class
         Map map = new Map(1, "England", 2, "Penguin", false, "Germany");
         map.setEdition("3rd");
         map.setDescription("This is a cool map");
@@ -47,6 +53,7 @@ public class Main
 
         System.out.println("\n------------------------------------------\n");
 
+        // Test the journal class
         Journal journal = new Journal(1, "Beep Boop Bop", 120, "Cisco", false, 5, "Computer Science");
         journal.setEdition("1st");
         journal.setDescription("This is a cool journal");
@@ -59,6 +66,7 @@ public class Main
 
         System.out.println("\n------------------------------------------\n");
 
+        // Test the book class
         Book book = new Book(1, "Scary House", 50, "Penguin", true, "Dick Campbell");
         book.setEdition("1st");
         book.setDescription("This is a cool book");

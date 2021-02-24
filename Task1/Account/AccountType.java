@@ -1,7 +1,10 @@
 package Task1.Account;
 
 // Enumerator to define the type of class 
-public enum AccountType {
+public enum AccountType 
+{
+
     CHECKING,
     SAVINGS
+
 }

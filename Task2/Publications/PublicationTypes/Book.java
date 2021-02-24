@@ -2,21 +2,28 @@ package Task2.Publications.PublicationTypes;
 
 import Task2.Publications.*;
 
-public class Book extends Publication{
+// The book class
+public class Book extends Publication
+{
 
+    // Initialise variables
     String rating, author, genre;
 
-    public Book(int id, String title, int length, String publisher, boolean onlineAvailability, String author) {
+    // Constructor method
+    public Book(int id, String title, int length, String publisher, boolean onlineAvailability, String author) 
+    {
         super(id, title, length, publisher, onlineAvailability);
         
         this.author = author;
     }
 
+    // Get the author of the book
     public String getAuthor()
     {
         return this.author;
     }
 
+    // Return the genre of the book or an unset message
     public String getGenre()
     {
         if (this.genre == null)
@@ -25,6 +32,7 @@ public class Book extends Publication{
             return this.genre;
     }
 
+    // Return the rating of the book or an unset message
     public String getRating()
     {
         if (this.rating == null)
@@ -33,14 +41,17 @@ public class Book extends Publication{
             return this.rating;
     }
 
+    // Set the genre of the book
     public void setGenre(String genre) {
         this.genre = genre;
     }
 
+    // Set the rating of the book
     public void setRating(String rating) {
         this.rating = rating;
     }
 
+    // Override the abstract getAllInfo method for the Book
     @Override
     public String getAllInfo() 
     {

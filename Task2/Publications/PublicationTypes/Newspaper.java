@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import Task2.Publications.Periodicals;
 
+// The Newspaper class
 public class Newspaper extends Periodicals
 {
 
+    // Initialise Variables
     private String newspaperFormat;
     private ArrayList<String> columns;
 
+    // Constructor method
     public Newspaper(int id, String title, int length, String publisher, boolean onlineAvailability, int issue, String format)
     {
         super(id, title, length, publisher, onlineAvailability, issue);
@@ -17,41 +20,53 @@ public class Newspaper extends Periodicals
         this.newspaperFormat = format;
     }
 
+    // Get the newspaper format
     public String getNewspaperFormat()
     {
         return this.newspaperFormat;
     }
 
+    // Set the columns / articles of the newspaper
     public void setColumns(ArrayList<String> columns)
     {
         this.columns = columns;
     }
 
+    // Display all of the editors who worked on the periodical
     public String listColumns()
     {
+
+        // If the list hasn't been created
         if (this.columns == null)
         {
             return "Not Set";
         }
 
+        // Return the list of columns in a readable way
         else
         {
+
+            // Append to this to create the return value
             StringBuilder columns = new StringBuilder();
+
+            // To record the index
             int index = 0;
-            for (String editor: this.columns)
+
+            // Loop through each column
+            for (String column: this.columns)
             {
                 if(this.columns.size() - 2 == index)
                 {
-                    columns.append(editor + " and ");
+                    columns.append(column + " and ");
                 }
                 else if (this.columns.size() - 1 > index)
                 {
-                    columns.append(editor + ", ");
+                    columns.append(column + ", ");
                 }
                 
                 else
                 {
-                    columns.append(editor);
+                    columns.append(column);
                 }
                 ++index;
             }
@@ -59,6 +74,7 @@ public class Newspaper extends Periodicals
         }
     }
 
+    // Override the abstract getAllInfo method for the Newspaper
     @Override
     public String getAllInfo() {
         return String.format("Newspaper ID: %d\nTitle: %s\nPublisher: %s\nEdition: %s\nAvailability: %s\nAccessible Online: %b\nDescription: %s\nReturn Date: %s\nIssue: %s\nEditors: %s\nFormat: %s\nColumns: %s"

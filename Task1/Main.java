@@ -17,7 +17,7 @@ public class Main
         System.out.println(savings.getStringBalance());
         savings.withdraw(250);
         System.out.println(savings.getAllInfo());
-        System.out.println("-----------------------------------------");
+        System.out.println("\n-----------------------------------------\n");
         
         // Test the Checking Account class
         CheckingAccount checking = new CheckingAccount("01234567", "Jack");
