@@ -1,6 +1,7 @@
 package Task2.Publications.PublicationTypes;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import Task2.Publications.Publication;
 
@@ -23,6 +24,19 @@ public class Map extends Publication
     public String getLocation()
     {
         return this.location;
+    }
+
+    // Create the map table
+    public void createMapTable() throws SQLException
+    {
+        String createTableString =
+            "CREATE TABLE map" + 
+            "(location VARCHAR(40) NULL) INHERITS (publication)";
+
+        try (Statement statement = this.connect().createStatement())
+        {
+            statement.executeQuery(createTableString);
+        }
     }
 
     // Override the abstract getAllInfo method for the Map

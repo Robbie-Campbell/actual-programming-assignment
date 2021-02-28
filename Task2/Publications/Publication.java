@@ -4,11 +4,17 @@ package Task2.Publications;
 import java.util.Date;
 import java.util.Calendar;
 
+// Postgres Database connection
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 // The superclass for all publications
 public abstract class Publication implements IPublication {
 
     // Initialise all of the variables
-    private String publisher, edition, description, title;
+    private String publisher, edition, description, title, serverAddress, username, password;
     private int length, publicationID;
     private Availability availability = Availability.AVAILABLE;
     private boolean onlineAvailability;
@@ -22,6 +28,9 @@ public abstract class Publication implements IPublication {
         this.length = length;
         this.publisher = publisher;
         this.onlineAvailability = onlineAvailability;
+        this.serverAddress = "jdbc:postgresql://localhost/library";
+        this.username = secrets.username;
+        this.password = secrets.password;
     }
 
     // Return the ID of the publication
@@ -123,7 +132,47 @@ public abstract class Publication implements IPublication {
         return this.length;
     }
 
+
+    // Method to connect to a database
+    public Connection connect()
+    {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(this.serverAddress, this.username, this.password);
+            System.out.println("Connected to the PostgreSQL server successfully.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return conn;
+    }
+
+        // Create the super table for the 
+        public void createDBTable() throws SQLException
+        {
+    
+            // Create table script
+            String createTableString = 
+                "CREATE TABLE publication " + 
+                "(publication_id INT NOT NULL, " +
+                "title VARCHAR(30) NOT NULL, " + 
+                "publisher VARCHAR(30) NOT NULL, " + 
+                "edition VARCHAR(10) NULL, " + 
+                "availability VARCHAR(15) NOT NULL, " + 
+                "online_availability BOOLEAN NOT NULL, " + 
+                "description TEXT NULL, " + 
+                "return_date TIMESTAMP NULL, " + 
+                "PRIMARY KEY (publication_id))";
+    
+            try (Statement statement = this.connect().createStatement())
+            {
+                statement.executeQuery(createTableString);
+            }
+        }
+
+
     // Define a method for each class to reveal all of their information
     public abstract String getAllInfo();
+
     
 }

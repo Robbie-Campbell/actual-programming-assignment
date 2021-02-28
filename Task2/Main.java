@@ -2,17 +2,16 @@ package Task2;
 
 import Task2.Publications.PublicationTypes.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Task2.Publications.Availability;
 
 // The main class
-public class Main 
-{
+public class Main {
 
     // Run the main method
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) throws SQLException {
 
         // Test the magazine class
         Magazine magazine = new Magazine(1, "Woman Speak", 30, "Womyn", false, 10);
@@ -74,5 +73,7 @@ public class Main
         book.setGenre("Horror");
         book.setRating("3 Stars");
         System.out.println(book.getAllInfo());
+
+        newspaper.createNewspaperTable();
     }
 }

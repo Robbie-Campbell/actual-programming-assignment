@@ -1,5 +1,8 @@
 package Task2.Publications.PublicationTypes;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import Task2.Publications.Periodicals;
 
 // The Journal class
@@ -21,6 +24,21 @@ public class Journal extends Periodicals
     public String getAcademicArea()
     {
         return this.academicArea;
+    }
+
+    // Create the Journal table
+    public void createJournalTable() throws SQLException
+    {
+        String createTableString =
+            "CREATE TABLE journal" + 
+            "(issue INT NULL, " + 
+            "academic_area VARCHAR(20) NULL " + 
+            ") INHERITS (publication)";
+
+        try (Statement statement = this.connect().createStatement())
+        {
+            statement.executeQuery(createTableString);
+        }
     }
 
     // Override the abstract getAllInfo method for the Journal
