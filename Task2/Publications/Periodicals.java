@@ -5,12 +5,14 @@ import java.util.ArrayList;
 // The super class for periodical publications (magazines, newspapers and journals)
 public abstract class Periodicals extends Publication
 {
+
     // Initialise varaible pointers
     private int issue;
     private ArrayList<String> editors;
 
     // Constructor method
-    public Periodicals(int id, String title, int length, String publisher, boolean onlineAvailability, int issue) {
+    public Periodicals(int id, String title, int length, String publisher, boolean onlineAvailability, int issue) 
+    {
         super(id, title, length, publisher, onlineAvailability);
 
         this.issue = issue;

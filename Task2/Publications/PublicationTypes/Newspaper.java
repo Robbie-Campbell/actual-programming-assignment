@@ -1,5 +1,7 @@
 package Task2.Publications.PublicationTypes;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import Task2.Publications.Periodicals;
@@ -18,6 +20,21 @@ public class Newspaper extends Periodicals
         super(id, title, length, publisher, onlineAvailability, issue);
 
         this.newspaperFormat = format;
+    }
+
+    // Create the newspaper table
+    public void createNewspaperTable() throws SQLException
+    {
+        String createTableString =
+            "CREATE TABLE newspaper" + 
+            "(issue INT NULL, " + 
+            "newspaper_format VARCHAR(20) NULL " + 
+            ") INHERITS (publication)";
+
+        try (Statement statement = this.connect().createStatement())
+        {
+            statement.executeQuery(createTableString);
+        }
     }
 
     // Get the newspaper format

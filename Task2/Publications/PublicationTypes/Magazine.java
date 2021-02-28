@@ -1,5 +1,8 @@
 package Task2.Publications.PublicationTypes;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import Task2.Publications.Periodicals;
 
 // The Magazine class
@@ -28,6 +31,21 @@ public class Magazine extends Periodicals
     public void setTopic(String topic)
     {
         this.topic = topic;
+    }
+
+    // Create the magazine table
+    public void createMagazineTable() throws SQLException
+    {
+        String createTableString =
+            "CREATE TABLE magazine" + 
+            "(issue INT NULL, " + 
+            "topic VARCHAR(20) NULL " + 
+            ") INHERITS (publication)";
+
+        try (Statement statement = this.connect().createStatement())
+        {
+            statement.executeQuery(createTableString);
+        }
     }
 
     // Override the abstract getAllInfo method for the Magazine

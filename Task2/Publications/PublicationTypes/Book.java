@@ -1,5 +1,8 @@
 package Task2.Publications.PublicationTypes;
 
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import Task2.Publications.*;
 
 // The book class
@@ -49,6 +52,22 @@ public class Book extends Publication
     // Set the rating of the book
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    // Create the Journal table
+    public void createBookTable() throws SQLException
+    {
+        String createTableString =
+            "CREATE TABLE book" + 
+            "(author VARCHAR(20) NULL, " + 
+            "genre VARCHAR(20) NULL, " + 
+            "rating VARCHAR(20) NULL " + 
+            ") INHERITS (publication)";
+
+        try (Statement statement = this.connect().createStatement())
+        {
+            statement.executeQuery(createTableString);
+        }
     }
 
     // Override the abstract getAllInfo method for the Book
