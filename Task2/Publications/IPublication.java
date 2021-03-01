@@ -37,7 +37,7 @@ public interface IPublication {
     public boolean getOnlineAvailability();
 
     // Set a return date of the publication
-    public void setReturnDate(Date returnDate);
+    public void setReturnDate(String date);
 
     // Provide the of the publication
     public String getReturnDate();

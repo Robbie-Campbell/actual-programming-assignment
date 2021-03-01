@@ -9,16 +9,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 // The superclass for all publications
 public abstract class Publication implements IPublication {
 
     // Initialise all of the variables
-    private String publisher, edition, description, title, serverAddress, username, password;
+    private String publisher, edition, description, title, serverAddress, username, password, returnDate;
     private int length, publicationID;
     private Availability availability = Availability.AVAILABLE;
     private boolean onlineAvailability;
-    private Date returnDate;
 
     // Constructor Method
     public Publication(int id, String title, int length, String publisher, boolean onlineAvailability)
@@ -28,7 +29,8 @@ public abstract class Publication implements IPublication {
         this.length = length;
         this.publisher = publisher;
         this.onlineAvailability = onlineAvailability;
-        this.serverAddress = "jdbc:postgresql://localhost/library";
+        this.returnDate = null;
+        this.serverAddress = "jdbc:postgresql://localhost/library?zeroDateTimeBehavior=convertToNull";
         this.username = secrets.username;
         this.password = secrets.password;
     }
@@ -48,10 +50,7 @@ public abstract class Publication implements IPublication {
     // Return the description of the publication or an unset message
     @Override
     public String getDescription() {
-        if (this.description == null)
-            return "Not Set";
-        else
-            return this.description;
+        return this.description;
     }
 
     // Set the description of the publication
@@ -76,7 +75,9 @@ public abstract class Publication implements IPublication {
             Calendar calendar = Calendar.getInstance();     
             calendar.add(Calendar.DAY_OF_YEAR, noOfDays);
             Date date = calendar.getTime();
-            setReturnDate(date);
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String text = formatter.format(date);
+            setReturnDate(text);
         }
         else
         {
@@ -86,60 +87,72 @@ public abstract class Publication implements IPublication {
 
     // Get the publications publisher
     @Override
-    public String getPublisher() {
+    public String getPublisher() 
+    {
         return this.publisher;
     }
 
     // Get the edition of the book or return not set
     @Override
-    public String getEdition() {
-        if (this.edition == null)
-            return "Not Set";
-        else
-            return this.edition;
+    public String getEdition() 
+    {
+        return this.edition;
     }
 
     // Set the edition of the book
     @Override
-    public void setEdition(String edition) {
+    public void setEdition(String edition) 
+    {
         this.edition = edition;
     }
 
     // Return if the book is available online
     @Override
-    public boolean getOnlineAvailability() {
+    public boolean getOnlineAvailability() 
+    {
         return this.onlineAvailability;
     }
 
     // Set the return date of the book (called in the setAvailability method)
     @Override
-    public void setReturnDate(Date returnDate) {
-        this.returnDate = returnDate;
+    public void setReturnDate(String date) 
+    {
+        System.out.println(date);
+        this.returnDate = date;
     }
 
     // Get the current return date or return not set
     @Override
-    public String getReturnDate() {
-        if (this.returnDate == null)
-            return "Not Set";
-        else
-            return String.valueOf(returnDate);
+    public String getReturnDate() 
+    {
+
+        return this.returnDate;
     }
 
     // Get the length of the publication
     @Override
-    public int getLength() {
+    public int getLength() 
+    {
         return this.length;
     }
 
+    // ABSTRACT METHODS
 
+    // Define a method for each class to reveal all of their information
+    public abstract String getAllInfo();
+
+    // Define a method for inserting data into the database
+    public abstract void insertNewRow() throws SQLException;
+
+    // DATABASE FUNCTIONALITY
+    
     // Method to connect to a database
     public Connection connect()
     {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(this.serverAddress, this.username, this.password);
-            System.out.println("Connected to the PostgreSQL server successfully.");
+            System.out.println("Success");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -147,32 +160,34 @@ public abstract class Publication implements IPublication {
         return conn;
     }
 
-        // Create the super table for the 
-        public void createDBTable() throws SQLException
+    // Create the super table for the 
+    public void createDBTable() throws SQLException
+    {
+
+        // Create table script
+        String createTableString = 
+            "CREATE TABLE IF NOT EXISTS publication" + 
+            "(publication_id SERIAL, " +
+            "title VARCHAR(30) NOT NULL, " + 
+            "publisher VARCHAR(30) NOT NULL, " + 
+            "length INT NOT NULL, " + 
+            "edition VARCHAR(10) NULL, " + 
+            "availability VARCHAR(15) NOT NULL, " + 
+            "online_availability BOOLEAN NOT NULL, " + 
+            "description TEXT NULL, " + 
+            "return_date TIMESTAMP NULL, " + 
+            "PRIMARY KEY (publication_id))";
+
+        try (Statement statement = this.connect().createStatement())
         {
-    
-            // Create table script
-            String createTableString = 
-                "CREATE TABLE publication " + 
-                "(publication_id INT NOT NULL, " +
-                "title VARCHAR(30) NOT NULL, " + 
-                "publisher VARCHAR(30) NOT NULL, " + 
-                "edition VARCHAR(10) NULL, " + 
-                "availability VARCHAR(15) NOT NULL, " + 
-                "online_availability BOOLEAN NOT NULL, " + 
-                "description TEXT NULL, " + 
-                "return_date TIMESTAMP NULL, " + 
-                "PRIMARY KEY (publication_id))";
-    
-            try (Statement statement = this.connect().createStatement())
-            {
-                statement.executeQuery(createTableString);
-            }
+            statement.execute(createTableString);
         }
+    }
 
-
-    // Define a method for each class to reveal all of their information
-    public abstract String getAllInfo();
-
-    
+    // Create the base prepared statement insert String
+    public String baseInsert()
+    {
+        String script = "title, publisher, length, edition, availability, online_availability, description, return_date,";
+        return script;
+    }
 }

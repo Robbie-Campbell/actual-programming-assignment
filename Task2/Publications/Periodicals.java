@@ -1,5 +1,7 @@
 package Task2.Publications;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 // The super class for periodical publications (magazines, newspapers and journals)
@@ -33,44 +35,67 @@ public abstract class Periodicals extends Publication
     // Display all of the editors who worked on the periodical
     public String listEditors()
     {
+        
+        // Append to this to create the return value
+        StringBuilder editors = new StringBuilder();
 
-        // If the list hasn't been created
-        if (this.editors == null)
+        // To record the index
+        int index = 0;
+
+        // Loop through each editor
+        for (String editor: this.editors)
         {
-            return "Not Set";
+            if(this.editors.size() - 2 == index)
+            {
+                editors.append(editor + " and ");
+            }
+            else if (this.editors.size() - 1 > index)
+            {
+                editors.append(editor + ", ");
+            }
+            
+            else
+            {
+                editors.append(editor);
+            }
+            ++index;
         }
 
-        // Return the list of editors in a readable way
-        else
+        // Return the string values of the user
+        return editors.toString();
+    }
+
+    // DATABASE FUNCTIONALITY
+
+    // Create the periodicals table
+    public void createPeriodicalTable() throws SQLException
+    {
+
+        // Create the unique columns for the newspaper table
+        String createTableString =
+            "CREATE TABLE IF NOT EXISTS periodical" + 
+            "(issue INT NULL" + 
+            ") INHERITS (publication)";
+
+        try (Statement statement = this.connect().createStatement())
         {
+            statement.execute(createTableString);
+        }
+    }
 
-            // Append to this to create the return value
-            StringBuilder editors = new StringBuilder();
+    // Create the editors table
+    public void createEditorsTable() throws SQLException
+    {
 
-            // To record the index
-            int index = 0;
+        String createTableString =
+            "CREATE TABLE IF NOT EXISTS editor" + 
+            "(periodical_id INT NULL, " + 
+            "name varchar(20) NULL, " + 
+            "FOREIGN KEY(periodical_id) REFERENCES publication(publication_id))";
 
-            // Loop through each editor
-            for (String editor: this.editors)
-            {
-                if(this.editors.size() - 2 == index)
-                {
-                    editors.append(editor + " and ");
-                }
-                else if (this.editors.size() - 1 > index)
-                {
-                    editors.append(editor + ", ");
-                }
-                
-                else
-                {
-                    editors.append(editor);
-                }
-                ++index;
-            }
-
-            // Return the string values of the user
-            return editors.toString();
+        try (Statement statement = this.connect().createStatement())
+        {
+            statement.execute(createTableString);
         }
     }
 }
