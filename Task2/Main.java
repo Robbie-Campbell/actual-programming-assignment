@@ -27,10 +27,10 @@ public class Main {
         System.out.println("\n------------------------------------------\n");
 
         // Test the newspaper class
-        Newspaper newspaper = new Newspaper(1, "The Moon", 30, "British Publish House", false, 3, "Tabloid");
+        Newspaper newspaper = new Newspaper(4, "The Moon", 30, "British Publish House", false, 3, "Tabloid");
         newspaper.setEdition("1st");
         newspaper.setDescription("This is a cool newspaper");
-        newspaper.setAvailability(Availability.BORROWED);
+        newspaper.setAvailability(Availability.AVAILABLE);
         ArrayList<String> editors1 = new ArrayList<String>();
         editors1.add("Tony Banana");
         editors1.add("Harry Aids");
@@ -74,6 +74,26 @@ public class Main {
         book.setRating("3 Stars");
         System.out.println(book.getAllInfo());
 
+        journal.createDBTable();
+        journal.createPeriodicalTable();
+        journal.createEditorsTable();
+        journal.createJournalTable();
         newspaper.createNewspaperTable();
+        book.createBookTable();
+        map.createMapTable();
+        magazine.createMagazineTable();
+
+        map.insertNewRow();
+        journal.insertNewRow();
+        newspaper.insertNewRow();
+        book.insertNewRow();
+        magazine.insertNewRow();
+
+        /*
+         * pgsql sample: insert into newspaper (title, publisher, edition, availability,
+         * online_availability, description, return_date, issue, newspaper_format)
+         * values ('hello', 'hello', 'hello', 'available', true, null, null, 2,
+         * 'broadsheet');
+         */
     }
 }
